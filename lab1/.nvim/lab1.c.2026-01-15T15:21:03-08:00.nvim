@@ -1,0 +1,18 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void) {
+
+  char *line = NULL;
+  size_t bufferSize = 0;
+  size_t numOfchars = 0;
+
+  while(1){
+    printf("Enter some text please: ");
+    fflush(stdout);//this is so the prompt is printed right away
+  }
+  
+  numOfchars= getline(&line,&bufferSize, stdin);
+  return 0;
+}
