@@ -1,0 +1,32 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#define HISTSIZE 5
+
+void printingHistory(char *history[],int count){
+ ┆ for (int i=0; i< count; i++){
+ ┆ ┆ printf("%s",history[i]);
+   }
+}
+
+int appendHistory(char *history[], int count, char *line){
+  ┆ //check if its less than set size
+  if(count < HISTSIZE){
+    history[count]= line;
+    count++;
+  }else{
+    free(history[0]);
+    //then shift everything up by 1
+    for (int i=1; i< HISTSIZE; i++){
+    ┆ history[i-1]=history[i];
+    }
+    history[HISTSIZE-1]=line;
+  }
+ return count;
+}
+
+
+
+
+
