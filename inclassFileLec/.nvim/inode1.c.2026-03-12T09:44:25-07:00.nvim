@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+  for (int i = 1; i < argc; ++i) {
+    struct stat s;
+    int res = stat(argv[i], &s);
+    if (res < 0) {
+      fprintf(stderr, "stat '%s", argv[i]);
+      perror("'");
+      continue;
+    }
+  }
+  return 0;
+}

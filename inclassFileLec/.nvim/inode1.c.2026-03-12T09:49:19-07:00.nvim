@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+  for (int i = 1; i < argc; ++i) {
+    struct stat s;
+    int res = stat(argv[i], &s);
+    if (res < 0) {
+      fprintf(stderr, "stat '%s", argv[i]);
+      perror("'");
+      continue;
+    }
+    if(S_ISREG(s.st_mode)){
+      printf("%s: regular file\n", argv[i]);
+    }else if(S_ISDIR(s.st_mode)){
+      printf("%s: directory\n", argv[i]);
+    }else{
+      printf("%s: other\n",argv[i]);
+    }
+  }
+  return 0;
+}
