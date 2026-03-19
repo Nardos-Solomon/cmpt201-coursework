@@ -36,19 +36,19 @@ void *handle_client(void *arg) {
 
   // TODO: print the message received from client
   // TODO: increase total_message_count per message
-  int cfd = client->cfd;
-  int client_id = client->client_id;
+  int cfd=client->cfd;
+  int client_id=client->client_id;
   char buf[BUF_SIZE];
   ssize_t num_read;
   free(client);
 
-  while ((num_read = read(cfd, buf, BUF_SIZE - 1)) > 0) {
-    buf[num_read] = '\0';
+  while((num_read=read(cfd,buf,BUF_SIZE-1))>0){
+    buf[num_read]='\0';
     pthread_mutex_lock(&count_mutex);
     total_message_count++;
-    printf("Msg # %d; Client ID %d: %s", total_message_count, client_id, buf);
+    printf("Msg # %d; Client ID %d: %s",total_message_count,client_id,buf);
     pthread_mutex_unlock(&count_mutex);
-    if (buf[num_read - 1] != '\n') {
+    if(buf[num_read -1]!='\n'){
       printf("\n");
     }
   }
@@ -84,26 +84,25 @@ int main() {
     // TODO: create a new thread when a new connection is encountered
     // TODO: call handle_client() when launching a new thread, and provide
     // client_info
-    int cfd = accept(sfd, NULL, NULL);
-    if (cfd == -1) {
+    int cfd=accept(sfd,NULL,NULL);
+    if(cfd==-1){
       continue;
     }
-
-    struct client_info *client = malloc(sizeof(struct client_info));
-    if (client == NULL) {
+    
+    struct client_info *client= malloc(sizeof(struct client_info));
+    if(client ==NULL){
       close(cfd);
       continue;
     }
 
     pthread_mutex_lock(&client_id_mutex);
-    client->client_id = client_id_counter;
+    client->client_id= client_id_counter;
     client_id_counter++;
     pthread_mutex_unlock(&client_id_mutex);
-    client->cfd = cfd;
-    printf("New client created! ID %d on socket FD %d\n", client->client_id,
-           client->cfd);
+    client->cfd=cfd;
+    printf("New client created! ID %d on socket FD %d\n",client->client_id,client->cfd);
     pthread_t tid;
-    if (pthread_create(&tid, NULL, handle_client, client) != 0) {
+    if(pthread_create(&tid, NULL, handle_client,client)!=0){
       free(client);
       close(cfd);
       continue;
